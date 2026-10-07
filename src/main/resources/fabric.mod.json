@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "potionalert",
+  "version": "${version}",
+  "name": "Potion Alert",
+  "description": "Plays a loud sound when Speed, Strength, Fire Resistance or Weaving has 10 seconds left.",
+  "authors": ["You"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.example.potionalert.PotionAlertClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.18.1",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
