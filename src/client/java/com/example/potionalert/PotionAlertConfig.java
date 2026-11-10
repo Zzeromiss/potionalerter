@@ -101,6 +101,6 @@ public final class PotionAlertConfig {
     public static void play(MinecraftClient client) {
         Identifier id = Identifier.tryParse(soundId);
         if (id == null || volume <= 0.0f) return;
-        client.getSoundManager().play(PositionedSoundInstance.master(SoundEvent.of(id), 1.0f, volume));
+        client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvent.of(id), 1.0f, volume));
     }
 }
