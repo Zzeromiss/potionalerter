@@ -7,20 +7,12 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class PotionAlertClient implements ClientModInitializer {
-
-    // ===== Easy settings =====
-    private static final int WARN_TICKS = 200;          // 10 seconds * 20 ticks
-    private static final SoundEvent ALERT_SOUND = SoundEvents.BLOCK_BELL_USE;
-    private static final float VOLUME = 3.0f;           // >1.0 = louder / carries further
-    private static final float PITCH = 1.0f;
 
     // Only these effects trigger the sound
     private static final Set<RegistryEntry<StatusEffect>> TRACKED = Set.of(
@@ -35,6 +27,7 @@ public class PotionAlertClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        PotionAlertConfig.load();
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
     }
 
@@ -44,6 +37,7 @@ public class PotionAlertClient implements ClientModInitializer {
             return;
         }
 
+        int mark = PotionAlertConfig.alertSeconds * 20; // seconds -> ticks
         Map<RegistryEntry<StatusEffect>, Integer> current = new HashMap<>();
 
         for (StatusEffectInstance effect : client.player.getStatusEffects()) {
@@ -54,9 +48,9 @@ public class PotionAlertClient implements ClientModInitializer {
             current.put(type, duration);
 
             Integer previous = lastDuration.get(type);
-            // Fires once when the timer crosses 10s (not when re-drunk with <10s left)
-            if (previous != null && previous > WARN_TICKS && duration <= WARN_TICKS) {
-                client.player.playSound(ALERT_SOUND, VOLUME, PITCH);
+            // Plays once when the timer crosses the chosen mark
+            if (previous != null && previous > mark && duration <= mark) {
+                PotionAlertConfig.play(client);
             }
         }
 

@@ -3,17 +3,21 @@
   "id": "potionalert",
   "version": "${version}",
   "name": "Potion Alert",
-  "description": "Plays a loud sound when Speed, Strength, Fire Resistance or Weaving has 10 seconds left.",
+  "description": "Plays a loud sound when Speed, Strength, Fire Resistance or Weaving is about to run out. Configurable in Mod Menu.",
   "authors": ["You"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.example.potionalert.PotionAlertClient"]
+    "client": ["com.example.potionalert.PotionAlertClient"],
+    "modmenu": ["com.example.potionalert.PotionAlertModMenu"]
   },
   "depends": {
     "fabricloader": ">=0.18.1",
     "minecraft": "~1.21.11",
     "java": ">=21",
     "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": "*"
   }
 }
